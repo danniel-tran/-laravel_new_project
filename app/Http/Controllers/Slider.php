@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
+use App\Models\SliderModel as MainModel;
 
 class Slider extends Controller
 {
@@ -11,11 +12,13 @@ class Slider extends Controller
     private $controllerName = "slider";
     public function __construct()
     {
+        $this->model = new MainModel();
         View::share('controllerName', $this->controllerName);
     }
     public function index()
     {
-        return view($this->pathViewController . "index");
+        $items = $this->model->listItem(null, ['task' => "admin-list-items"]);
+        return view($this->pathViewController . "index", ['items' => $items]);
     }
     public function form()
     {
