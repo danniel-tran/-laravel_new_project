@@ -17,8 +17,9 @@ class SliderModel extends Model
     {
         $result = null;
         if ($options['task'] == "admin-list-items") {
-            $result = self::select('id', 'name')->get();
-            // $result = self::all('id','name');
+            $result = self::select('id', 'name')
+                // ->where("id", ">", 4)
+                ->get();
         }
         return $result;
     }

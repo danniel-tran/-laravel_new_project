@@ -8,7 +8,7 @@ use App\Models\SliderModel as MainModel;
 
 class Slider extends Controller
 {
-    private $pathViewController = "admin.slider.";
+    private $pathViewController = "admin.pages.slider.";
     private $controllerName = "slider";
     public function __construct()
     {
