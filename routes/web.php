@@ -17,7 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['prefix' => config('zvn.prefix_admin')], function () {
+Route::group(['prefix' => config('zvn.route.prefix_admin')], function () {
     // ===================================DASHBOARD========================================
     $prefix_slider = "dashboard";
     $controllerName = "dashboard";
@@ -40,7 +40,9 @@ Route::group(['prefix' => config('zvn.prefix_admin')], function () {
             $controller = ucfirst($controllerName) . '@';
             Route::get('/', $controller . "index")->name("$controllerName");
             Route::get('/edit/{id}', $controller . "edit")->where('id', '[0-9]+')->name("$controllerName/edit");
+            Route::get('/form/{id?}', $controller . 'form')->name($controllerName . '/form');
             Route::get('/delete/{id}', $controller . "delete")->where('id', '[0-9]+')->name("$controllerName/delete");
+            Route::get('/change-status-{status}/{id}', $controller . "status")->where('id', '[0-9]+')->name("$controllerName/status");
         }
     );
 });

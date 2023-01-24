@@ -1,3 +1,7 @@
+@php
+    use App\Helper\Template;
+@endphp
+
 <div class="x_content">
     <div class="table-responsive">
         <table class="table table-striped jambo_table bulk_action">
@@ -14,31 +18,35 @@
             <tbody>
 
                 @if (count($items) > 0)
-                    <tr class="odd pointer">
-                        <td>1</td>
-                        <td width="40%">
-                            <p><strong>Name:</strong> Ưu đãi học phí</p>
-                            <p><strong>Description:</strong> Tổng hợp các trương trình ưu đãi học phí hàng tuần...</p>
-                            <p><strong>Link:</strong> https://zendvn.com/uu-dai-hoc-phi-tai-zendvn/</p>
-                            <p><img src="http://proj_news.xyz/images/slider/LWi6hINpXz.jpeg" alt="Ưu đãi học phí" class="zvn-thumb"></p>
-                        </td>
-                        <td><a href="http://proj_news.xyz/admin123/slider/change-status-active/3" type="button" class="btn btn-round btn-success">Kích hoạt</a></td>
-                        <td>
-                            <p><i class="fa fa-user"></i> admin</p>
-                            <p><i class="fa fa-clock-o"></i> 24/04/2019</p>
-                        </td>
-                        <td>
-                            <p><i class="fa fa-user"></i> admin</p>
-                            <p><i class="fa fa-clock-o"></i> 24/04/2019</p>
-                        </td>
-                        <td class="last">
-                            <div class="zvn-box-btn-filter"><a href="http://proj_news.xyz/admin123/slider/form/3" type="button" class="btn btn-icon btn-success" data-toggle="tooltip" data-placement="top" data-original-title="Edit">
-                                    <i class="fa fa-pencil"></i>
-                                </a><a href="http://proj_news.xyz/admin123/slider/delete/3" type="button" class="btn btn-icon btn-danger btn-delete" data-toggle="tooltip" data-placement="top" data-original-title="Delete">
-                                    <i class="fa fa-trash"></i>
-                                </a></div>
-                        </td>
-                    </tr>
+                    @foreach ($items as $key => $val)
+                        @php
+                            $index        = $key + 1;
+                            $parityClass  = (fmod($index, 2) == 0) ? "even" : "odd";
+                            $id           = $val["id"];
+                            $name         = $val['name'];
+                            $description  = $val['description'];
+                            $link         = $val['link'];
+                            $thumb        = $val['thumb'];
+                            $status       = Template::showItemStatus($controllerName,$id,$val['status']);
+                            $create       = Template::showItemHistory($val['created_by'],date(config("zvn.format.long_time") , strtotime($val['created'])) );
+                            $modified     = Template::showItemHistory($val['modified_by'],date(config("zvn.format.long_time") , strtotime($val['modified'])) );
+                            $thumb        = Template::showItemThumb($controllerName,$val['thumb'],$name);
+                            $buttonAction = Template::showButtonAction($controllerName , $id);
+                        @endphp
+                        <tr class="{{ $parityClass }} pointer">
+                            <td> {{ $index }}</td>
+                            <td width="40%">
+                                <p><strong>Name:</strong> {{ $name }}</p>
+                                <p><strong>Description:</strong> {{ $description }}</p>
+                                <p><strong>Link:</strong> {{ $link }}</p>
+                                <p>{!! $thumb !!}</p>
+                            </td>
+                            <td>{!! $status !!}</td>
+                            <td>{!! $create !!}</td>
+                            <td>{!! $modified !!}</td>
+                            <td class="last">{!! $buttonAction !!}</td>
+                        </tr>
+                    @endforeach
                 @else
                     @include("admin.template.list_empty" ,['colspan' => 6])
                 @endif
