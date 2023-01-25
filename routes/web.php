@@ -24,7 +24,7 @@ Route::group(['prefix' => config('zvn.route.prefix_admin')], function () {
     Route::group(
         ['prefix' => $prefix_slider],
         function () use ($controllerName) {
-            $controller = ucfirst($controllerName) . '@';
+            $controller = ucfirst($controllerName) . 'Controller@';
             Route::get('/', $controller . "index")->name("$controllerName");
             Route::get('/edit/{id}', $controller . "edit")->where('id', '[0-9]+')->name("$controllerName/edit");
             Route::get('/delete/{id}', $controller . "delete")->where('id', '[0-9]+')->name("$controllerName/delete");
@@ -37,7 +37,7 @@ Route::group(['prefix' => config('zvn.route.prefix_admin')], function () {
     Route::group(
         ['prefix' => $prefix_slider],
         function () use ($controllerName) {
-            $controller = ucfirst($controllerName) . '@';
+            $controller = ucfirst($controllerName) . 'Controller@';
             Route::get('/', $controller . "index")->name("$controllerName");
             Route::get('/edit/{id}', $controller . "edit")->where('id', '[0-9]+')->name("$controllerName/edit");
             Route::get('/form/{id?}', $controller . 'form')->name($controllerName . '/form');

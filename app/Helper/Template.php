@@ -4,6 +4,34 @@ namespace App\Helper;
 
 class Template
 {
+    public static function showButtonFilter($controllerName, $itemsStatusCount,$currentStatusCount)
+    {
+        $xhtml = "";
+        $tmpStatus = config("zvn.template.status");
+        array_unshift(
+            $itemsStatusCount,
+            [
+                "count" => array_sum(array_column($itemsStatusCount, "count")),
+                "status" => "all"
+            ]
+        );
+        if (count($itemsStatusCount) > 0) {
+            foreach ($itemsStatusCount as $item) {
+                $statusValue = (array_key_exists($item['status'], $tmpStatus)) ? $item['status'] : "default";
+                $currentTemplateStatus = $tmpStatus[strtolower($statusValue)];
+                $link = route($controllerName) . "?filter_status=$statusValue";
+                $btn_class = ($currentStatusCount == $statusValue) ? "btn-primary" : "btn-success";
+                $xhtml .= '
+                    <a href="' . $link . ' " type="button" class="btn '. $btn_class .'">
+                        ' . $currentTemplateStatus['name'] . ' 
+                        <span class="badge bg-white">' . $item['count'] . '</span>
+                    </a>
+                ';
+            }
+        }
+        return $xhtml;
+    }
+
     public static function showItemHistory($by, $time)
     {
         $xhtml = '
@@ -12,16 +40,15 @@ class Template
         ';
         return $xhtml;
     }
-    public static function showItemStatus($controllerName, $id, $status)
+    public static function showItemStatus($controllerName, $id, $statusValue)
     {
-        $tmplStatus = [
-            'active' => ['name' => 'Kích hoạt', 'class' => 'btn-success'],
-            'inactive' => ['name' => 'Chưa kích hoạt', 'class' => 'btn-info'],
-        ];
-        $link = route($controllerName, "/status", ["status" => $status, "id" => $id]);
+        $tmpStatus = config("zvn.template.status");
+        $statusValue = (array_key_exists($statusValue, $tmpStatus)) ? $statusValue : "default";
+        $currentTemplateStatus = $tmpStatus[strtolower($statusValue)];
+        $link = route($controllerName, "/status", ["status" => $statusValue, "id" => $id]);
         $xhtml = '
             <a href="' . $link . '" type="button" 
-            class="btn btn-round ' . $tmplStatus[$status]['class'] . '">' . $tmplStatus[$status]['name'] . '
+            class="btn btn-round ' . $currentTemplateStatus['class'] . '">' . $currentTemplateStatus['name'] . '
             </a>
         ';
         return $xhtml;

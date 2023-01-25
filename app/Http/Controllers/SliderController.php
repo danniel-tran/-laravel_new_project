@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use App\Models\SliderModel as MainModel;
 
-class Slider extends Controller
+class SliderController extends Controller
 {
     private $pathViewController = "admin.pages.slider.";
     private $controllerName = "slider";
@@ -17,10 +17,18 @@ class Slider extends Controller
         $this->params = ['pagination' => ["totalItemsInPage" => 3]];
         View::share('controllerName', $this->controllerName);
     }
-    public function index()
+    public function index(Request $request)
     {
+        $this->params['filter']['status'] = $request->input('filter_status', 'all');
         $items = $this->model->listItem($this->params, ['task' => "admin-list-items"]);
-        return view($this->pathViewController . "index", ['items' => $items]);
+        $itemsStatusCount   = $this->model->countByStatus($this->params, ['task' => 'admin-count-items-group-by-status']);
+        return view($this->pathViewController . "index",
+            [
+                'params' => $this->params,
+                'items' => $items,
+                'itemsStatusCount' =>  $itemsStatusCount
+            ]
+        );
     }
     public function form()
     {
