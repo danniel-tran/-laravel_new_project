@@ -14,7 +14,41 @@ return [
             'inactive' => ['name' => 'Chưa kích hoạt', 'class' => 'btn-info'],
             'block' => ['name' => 'Bị khóa', 'class' => 'btn-danger'],
             'default'      => ['name' => 'Chưa xác định', 'class' => 'btn-success'],
-        ]    
+        ],
+        'search'       => [
+            'all'           => ['name'=> 'Search by All'],
+            'id'            => ['name'=> 'Search by ID'],
+            'name'          => ['name'=> 'Search by Name'],
+            'username'      => ['name'=> 'Search by Username'],
+            'fullname'      => ['name'=> 'Search by Fullname'],
+            'email'         => ['name'=> 'Search by Email'],
+            'description'   => ['name'=> 'Search by Description'],
+            'link'          => ['name'=> 'Search by Link'],
+            'content'       => ['name'=> 'Search by Content'],    
+        ],
+        'button'=>[
+            'edit'      => ['class' => 'btn-success', 'title' => 'Edit', 'icon' => 'fa-pencil', 'route-name' => '/form'],
+            'delete'    => ['class' => 'btn-danger btn-delete', 'title' => 'Delete', 'icon' => 'fa-trash', 'route-name' => '/delete'],
+            'info'      => ['class' => 'btn-info', 'title' => 'View', 'icon' => 'fa-pencil', 'route-name' => '/delete'],
+        ]
     ],
+    'config' => [
+        'search' => [
+            'default'   => ['all', 'id', 'fullname'],
+            'slider'    => ['all', 'id', 'name', 'description', 'link'],
+            'category'  => ['all', 'name'],
+            'article'   => ['all', 'name', 'content'],
+            'rss'       => ['all', 'name', 'link'],
+            'user'      => ['all', 'username', 'email', 'fullname'],
+        ],
+        'button' => [
+            'default'   => ['edit', 'delete'],
+            'slider'    => ['edit', 'delete'],
+            'category'  => ['edit', 'delete'],
+            'article'   => ['edit', 'delete'],
+            'rss'   => ['edit', 'delete'],
+            'user'      => ['edit'],
+        ]
+    ]
 ]
 ?>

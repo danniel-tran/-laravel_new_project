@@ -14,12 +14,14 @@ class SliderController extends Controller
     public function __construct()
     {
         $this->model = new MainModel();
-        $this->params = ['pagination' => ["totalItemsInPage" => 3]];
+        $this->params = ['pagination' => ["totalItemsInPage" => 1]];
         View::share('controllerName', $this->controllerName);
     }
     public function index(Request $request)
     {
         $this->params['filter']['status'] = $request->input('filter_status', 'all');
+        $this->params['search']['field'] = $request->input('search_field', '');
+        $this->params['search']['value'] = $request->input('search_value', '');
         $items = $this->model->listItem($this->params, ['task' => "admin-list-items"]);
         $itemsStatusCount   = $this->model->countByStatus($this->params, ['task' => 'admin-count-items-group-by-status']);
         return view($this->pathViewController . "index",

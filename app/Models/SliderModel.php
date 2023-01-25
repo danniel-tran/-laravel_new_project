@@ -14,6 +14,13 @@ class SliderModel extends Model
     public $incrementing = false;
     public $timestamps = false;
 
+    public function __construct()
+    {
+        $this->table               = 'slider';
+        $this->folderUpload        = 'slider';
+        $this->fieldSearchAccepted = ['id', 'name', 'description', 'link'];
+        $this->crudNotAccepted     = ['_token', 'thumb_current'];
+    }
     public function listItem($params, $options = null)
     {
         $result = null;
@@ -22,8 +29,19 @@ class SliderModel extends Model
             if (isset($params['filter']['status']) && $params['filter']['status'] != 'all') {
                 $query->where("status", "=", $params['filter']['status']);
             }
+            if ($params['search']['value'] !== "") {
+                if ($params['search']['field'] == "all") {
+                    $query->where(function ($query) use ($params) {
+                        foreach ($this->fieldSearchAccepted as $column) {
+                            $query->orWhere($column, 'LIKE',  "%{$params['search']['value']}%");
+                        }
+                    });
+                } else if (in_array($params['search']['field'], $this->fieldSearchAccepted)) {
+                    $query->where($params['search']['field'], 'LIKE',  "%{$params['search']['value']}%");
+                }
+            }
             $result = $query->orderBy("id", "desc")
-                ->paginate(1);
+                ->paginate($params['pagination']['totalItemsInPage']);
         }
         return $result;
     }
@@ -32,9 +50,20 @@ class SliderModel extends Model
     {
         $result = null;
         if ($options['task'] == "admin-count-items-group-by-status") {
-            $result = self::select(DB::raw('count(id) as count, status'))
-                ->groupBy('status')
-                ->get()
+            $query = self::select(DB::raw('count(id) as count, status'))
+                ->groupBy('status');
+            if ($params['search']['value'] !== "") {
+                if ($params['search']['field'] == "all") {
+                    $query->where(function ($query) use ($params) {
+                        foreach ($this->fieldSearchAccepted as $column) {
+                            $query->orWhere($column, 'LIKE',  "%{$params['search']['value']}%");
+                        }
+                    });
+                } else if (in_array($params['search']['field'], $this->fieldSearchAccepted)) {
+                    $query->where($params['search']['field'], 'LIKE',  "%{$params['search']['value']}%");
+                }
+            }
+            $result = $query->get()
                 ->toArray();
         }
         return $result;
