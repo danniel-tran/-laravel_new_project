@@ -1,5 +1,6 @@
 @php
     use App\Helper\Template;
+    use App\Helper\Highlight;
 @endphp
 
 <div class="x_content">
@@ -23,10 +24,9 @@
                             $index        = $key + 1;
                             $parityClass  = (fmod($index, 2) == 0) ? "even" : "odd";
                             $id           = $val["id"];
-                            $name         = $val['name'];
-                            $description  = $val['description'];
-                            $link         = $val['link'];
-                            $thumb        = $val['thumb'];
+                            $name         = Highlight::show($val['name'],$params['search'],'name');
+                            $description  = Highlight::show($val['description'],$params['search'],'description');
+                            $link         = Highlight::show($val['link'],$params['search'],'link');
                             $status       = Template::showItemStatus($controllerName,$id,$val['status']);
                             $create       = Template::showItemHistory($val['created_by'],date(config("zvn.format.long_time") , strtotime($val['created'])) );
                             $modified     = Template::showItemHistory($val['modified_by'],date(config("zvn.format.long_time") , strtotime($val['modified'])) );
@@ -34,11 +34,11 @@
                             $buttonAction = Template::showButtonAction($controllerName , $id);
                         @endphp
                         <tr class="{{ $parityClass }} pointer">
-                            <td> {{ $index }}</td>
+                            <td> {!! $index !!}</td>
                             <td width="40%">
-                                <p><strong>Name:</strong> {{ $name }}</p>
-                                <p><strong>Description:</strong> {{ $description }}</p>
-                                <p><strong>Link:</strong> {{ $link }}</p>
+                                <p><strong>Name:</strong> {!! $name !!}</p>
+                                <p><strong>Description:</strong> {!! $description !!}</p>
+                                <p><strong>Link:</strong> {!! $link !!}</p>
                                 <p>{!! $thumb !!}</p>
                             </td>
                             <td>{!! $status !!}</td>
