@@ -29,7 +29,7 @@ class SliderModel extends Model
             if (isset($params['filter']['status']) && $params['filter']['status'] != 'all') {
                 $query->where("status", "=", $params['filter']['status']);
             }
-            if ($params['search']['value'] !== "") {
+            if (isset($params['search']['value']) && $params['search']['value'] !== "") {
                 if ($params['search']['field'] == "all") {
                     $query->where(function ($query) use ($params) {
                         foreach ($this->fieldSearchAccepted as $column) {
@@ -52,7 +52,7 @@ class SliderModel extends Model
         if ($options['task'] == "admin-count-items-group-by-status") {
             $query = self::select(DB::raw('count(id) as count, status'))
                 ->groupBy('status');
-            if ($params['search']['value'] !== "") {
+            if (isset($params['search']['value']) && $params['search']['value'] !== "") {
                 if ($params['search']['field'] == "all") {
                     $query->where(function ($query) use ($params) {
                         foreach ($this->fieldSearchAccepted as $column) {
@@ -67,5 +67,19 @@ class SliderModel extends Model
                 ->toArray();
         }
         return $result;
+    }
+
+    public function saveItem($params = null, $options = null) { 
+        if($options['task'] == 'change-status') {
+            $status = ($params['currentStatus'] == "active") ? "inactive" : "active";
+            self::where('id', $params['id'])->update(['status' => $status ]);
+        }
+    }
+
+    public function deleteItem($params = null, $options = null) {
+        if($options['task'] == 'detete-item') {
+            // self::where('id', $params['id'])->delete(['id' => $params['id']]);
+            self::destroy($params['id']);
+        }
     }
 }

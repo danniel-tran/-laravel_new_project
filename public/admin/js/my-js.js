@@ -57,6 +57,7 @@ $(document).ready(function () {
 
 		window.location.href = pathname + "?" + link.slice(0, -1);
 	});
+	$(".alert").fadeOut(3000) 
 
 	//Event onchange select filter
 	$selectFilter.on('change', function () {

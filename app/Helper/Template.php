@@ -82,7 +82,7 @@ class Template
         $tmpStatus = config("zvn.template.status");
         $statusValue = (array_key_exists($statusValue, $tmpStatus)) ? $statusValue : "default";
         $currentTemplateStatus = $tmpStatus[strtolower($statusValue)];
-        $link = route($controllerName, "/status", ["status" => $statusValue, "id" => $id]);
+        $link = route($controllerName . "/status", ["status" => $statusValue, "id" => $id]);
         $xhtml = '
             <a href="' . $link . '" type="button"
             class="btn btn-round ' . $currentTemplateStatus['class'] . '">' . $currentTemplateStatus['name'] . '

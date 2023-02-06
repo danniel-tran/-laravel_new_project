@@ -14,7 +14,7 @@ class SliderController extends Controller
     public function __construct()
     {
         $this->model = new MainModel();
-        $this->params = ['pagination' => ["totalItemsInPage" => 1]];
+        $this->params = ['pagination' => ["totalItemsInPage" => 5]];
         View::share('controllerName', $this->controllerName);
     }
     public function index(Request $request)
@@ -32,6 +32,13 @@ class SliderController extends Controller
             ]
         );
     }
+    public function status(Request $request)
+    {
+        $params["currentStatus"]  = $request->status;
+        $params["id"]             = $request->id;
+        $this->model->saveItem($params, ['task' => 'change-status']);
+        return redirect()->route($this->controllerName)->with('zvn_notify', 'Cập nhật trạng thái thành công!');
+    }
     public function form()
     {
         $title = "sliderController - form";
@@ -42,9 +49,10 @@ class SliderController extends Controller
         $title = "sliderController - edit";
         return view($this->pathViewController . "form", ['id' => $id, 'title' => $title]);
     }
-    public function delete($id)
+    public function delete(Request $request)
     {
-        $title = "sliderController - delete";
-        return view($this->pathViewController . "form", ['id' => $id, 'title' => $title]);
+        $params["id"]             = $request->id;
+        $this->model->deleteItem($params, ['task' => 'detete-item']);
+        return redirect()->route($this->controllerName)->with('zvn_notify', 'Xóa phần tử thành công!');
     }
 }
