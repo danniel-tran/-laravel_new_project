@@ -1,6 +1,6 @@
 <footer>
     <div class="pull-right">
-        Học lập trình online tại <a href="https://colorlib.com/">ZendVN.com</a>
+        Privacy Policy | Terms & Conditions
     </div>
     <div class="clearfix"></div>
 </footer>
