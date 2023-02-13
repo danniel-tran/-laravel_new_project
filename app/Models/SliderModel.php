@@ -21,6 +21,7 @@ class SliderModel extends Model
         $this->fieldSearchAccepted = ['id', 'name', 'description', 'link'];
         $this->crudNotAccepted     = ['_token', 'thumb_current'];
     }
+    
     public function listItem($params, $options = null)
     {
         $result = null;
@@ -69,17 +70,28 @@ class SliderModel extends Model
         return $result;
     }
 
-    public function saveItem($params = null, $options = null) { 
-        if($options['task'] == 'change-status') {
+    public function saveItem($params = null, $options = null)
+    {
+        if ($options['task'] == 'change-status') {
             $status = ($params['currentStatus'] == "active") ? "inactive" : "active";
-            self::where('id', $params['id'])->update(['status' => $status ]);
+            self::where('id', $params['id'])->update(['status' => $status]);
         }
     }
 
-    public function deleteItem($params = null, $options = null) {
-        if($options['task'] == 'detete-item') {
+    public function deleteItem($params = null, $options = null)
+    {
+        if ($options['task'] == 'detete-item') {
             // self::where('id', $params['id'])->delete(['id' => $params['id']]);
             self::destroy($params['id']);
         }
+    }
+
+    public function getItem($params, $options = null)
+    {
+        $result = null;
+        if ($options['task'] == 'get-item') {
+            $result = self::select('id', 'name', 'description', 'status', 'link', 'thumb')->where('id', $params['id'])->first();
+        }
+        return $result;
     }
 }

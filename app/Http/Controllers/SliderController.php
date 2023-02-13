@@ -11,12 +11,14 @@ class SliderController extends Controller
     private $pathViewController = "admin.pages.slider.";
     private $controllerName = "slider";
     private $params      = [];
+
     public function __construct()
     {
         $this->model = new MainModel();
         $this->params = ['pagination' => ["totalItemsInPage" => 5]];
         View::share('controllerName', $this->controllerName);
     }
+
     public function index(Request $request)
     {
         $this->params['filter']['status'] = $request->input('filter_status', 'all');
@@ -24,7 +26,8 @@ class SliderController extends Controller
         $this->params['search']['value'] = $request->input('search_value', '');
         $items = $this->model->listItem($this->params, ['task' => "admin-list-items"]);
         $itemsStatusCount   = $this->model->countByStatus($this->params, ['task' => 'admin-count-items-group-by-status']);
-        return view($this->pathViewController . "index",
+        return view(
+            $this->pathViewController . "index",
             [
                 'params' => $this->params,
                 'items' => $items,
@@ -32,6 +35,7 @@ class SliderController extends Controller
             ]
         );
     }
+
     public function status(Request $request)
     {
         $params["currentStatus"]  = $request->status;
@@ -39,19 +43,34 @@ class SliderController extends Controller
         $this->model->saveItem($params, ['task' => 'change-status']);
         return redirect()->route($this->controllerName)->with('zvn_notify', 'Cập nhật trạng thái thành công!');
     }
-    public function form()
+
+    public function form(Request $request)
     {
-        return view($this->pathViewController . "form", []);
+        $items = null;
+        if ($request->id != null) {
+            $params['id'] = $request->id;
+            $items = $this->model->getItem($params, ['task' => 'get-item']);
+        }
+        return view($this->pathViewController . "form", [
+            'item'        => $items
+        ]);
     }
+
     public function edit($id)
     {
         $title = "sliderController - edit";
         return view($this->pathViewController . "form", ['id' => $id, 'title' => $title]);
     }
+
     public function delete(Request $request)
     {
         $params["id"]             = $request->id;
         $this->model->deleteItem($params, ['task' => 'detete-item']);
         return redirect()->route($this->controllerName)->with('zvn_notify', 'Xóa phần tử thành công!');
+    }
+
+    public function save()
+    {
+        echo "this is " . __FILE__;
     }
 }

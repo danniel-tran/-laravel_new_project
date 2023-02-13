@@ -8,14 +8,20 @@ return [
         'short_time'=>'d/m/Y'
     ],
     'template'         => [
-        'status'       => [
+        'form_input' => [
+            'class' => 'form-control col-md-6 col-xs-12'
+        ],
+        'form_label' => [
+            'class' => 'control-label col-md-3 col-sm-3 col-xs-12'
+        ],
+        'status' => [
             'all'      => ['name' => 'Tất cả', 'class' => 'btn-success'],
             'active'   => ['name' => 'Kích hoạt', 'class'      => 'btn-success'],
             'inactive' => ['name' => 'Chưa kích hoạt', 'class' => 'btn-info'],
-            'block' => ['name' => 'Bị khóa', 'class' => 'btn-danger'],
-            'default'      => ['name' => 'Chưa xác định', 'class' => 'btn-success'],
+            'block'    => ['name' => 'Bị khóa', 'class' => 'btn-danger'],
+            'default'  => ['name' => 'Chưa xác định', 'class' => 'btn-success'],
         ],
-        'search'       => [
+        'search' => [
             'all'           => ['name'=> 'Search by All'],
             'id'            => ['name'=> 'Search by ID'],
             'name'          => ['name'=> 'Search by Name'],
