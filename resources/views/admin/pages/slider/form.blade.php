@@ -43,22 +43,13 @@
 @section("content")
 <div class="right_col" role="main">
     @include("admin.template.page_header",["pageIndex" => false])
+    @include("admin.template.show_error")
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 @include("admin.template.x_title",["title"=>"Form"])
                 <div class="x_content">
                     <br>
-                    <!-- <div class="alert alert-danger alert-dismissible fade in zvn-alert  " role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
-                        </button>
-                        <strong><i class="fa fa-exclamation-triangle"></i> Xảy ra lỗi!</strong>
-                        <p><strong>- Tên :</strong> không được rỗng</p>
-                        <p><strong>- Username:</strong> không có dấu</p>
-                        <p><strong>- Password:</strong> phải có ký tự đặc biệt</p>
-                    </div> -->
-                    <!-- FORM -->
-
                     {{ Form::open([
                         'method'         => 'POST', 
                         'url'            => route("$controllerName/save"),

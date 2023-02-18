@@ -41,7 +41,7 @@ Route::group(['prefix' => config('zvn.route.prefix_admin')], function () {
             Route::get('/', $controller . "index")->name("$controllerName");
             Route::get('/edit/{id}', $controller . "edit")->where('id', '[0-9]+')->name("$controllerName/edit");
             Route::get('/form/{id?}', $controller . 'form')->name($controllerName . '/form');
-            Route::get('/save', $controller . 'save')->name($controllerName . '/save');
+            Route::post('/save', $controller . 'save')->name($controllerName . '/save');
             Route::get('/delete/{id}', $controller . "delete")->where('id', '[0-9]+')->name("$controllerName/delete");
             Route::get('/change-status-{status}/{id}', $controller . "status")->where('id', '[0-9]+')->name("$controllerName/status");
         }

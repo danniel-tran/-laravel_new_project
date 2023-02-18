@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use App\Models\SliderModel as MainModel;
+use App\Http\Requests\SliderRequest as MainRequest;
 
 class SliderController extends Controller
 {
@@ -69,8 +70,8 @@ class SliderController extends Controller
         return redirect()->route($this->controllerName)->with('zvn_notify', 'Xóa phần tử thành công!');
     }
 
-    public function save()
+    public function save(MainRequest $request)
     {
-        echo "this is " . __FILE__;
+        $validated = $request->validated();
     }
 }
