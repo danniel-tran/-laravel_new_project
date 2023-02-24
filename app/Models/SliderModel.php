@@ -25,6 +25,7 @@ class SliderModel extends AdminModel
             if (isset($params['filter']['status']) && $params['filter']['status'] != 'all') {
                 $query->where("status", "=", $params['filter']['status']);
             }
+
             if (isset($params['search']['value']) && $params['search']['value'] !== "") {
                 if ($params['search']['field'] == "all") {
                     $query->where(function ($query) use ($params) {
@@ -38,6 +39,13 @@ class SliderModel extends AdminModel
             }
             $result = $query->orderBy("id", "desc")
                 ->paginate($params['pagination']['totalItemsInPage']);
+        }
+        if($options['task'] == 'news-list-items') {
+            $query = self::select('id', 'name', 'description', 'link', 'thumb')
+                        ->where('status', '=', 'active' )
+                        ->limit(5);
+
+            $result = $query->get()->toArray();
         }
         return $result;
     }
@@ -82,6 +90,8 @@ class SliderModel extends AdminModel
             if(!empty($params['thumb'])){
                 $this->deleteThumb($params['thumb_current']);
                 $params['thumb'] = $this->uploadThumb($params['thumb']);
+            }else{
+                array_push($this->crudNotAccepted,"thumb");
             }
             $params['modified_by']   = "hailan";
             $params['modified']      = date('Y-m-d');
@@ -116,6 +126,7 @@ class SliderModel extends AdminModel
     public function uploadThumb($thumbObj){
         $thumbName      = Str::random(10) . "_" . "." . $thumbObj->clientExtension();
         $thumbObj->storeAs($this->folderUpload, $thumbName, 'zvn_storage_image');
+        return $thumbName;
     }
 
     public function deleteThumb($thumbName){

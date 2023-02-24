@@ -1,7 +1,8 @@
 <?php
 return [
     'route' => [
-        'prefix_admin'=>'admin'
+        'prefix_admin'=>'admin',
+        'prefix_news'  => 'news_app',
     ],
     'format' => [
         'long_time'=>'H:i:s d/m/Y',

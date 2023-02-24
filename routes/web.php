@@ -47,3 +47,16 @@ Route::group(['prefix' => config('zvn.route.prefix_admin')  ], function () {
         }
     );
 });
+
+Route::group(['prefix' => config('zvn.route.prefix_news')  ], function () {
+    // ===================================NEWS========================================
+    $prefix_news = "";
+    $controllerName = "home";
+    Route::group(
+        ['prefix' => $prefix_news],
+        function () use ($controllerName) {
+            $controller = ucfirst($controllerName) . 'Controller@';
+            Route::get('/', $controller . "index")->name("$controllerName");
+        }
+    );
+});
