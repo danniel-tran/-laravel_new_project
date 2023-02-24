@@ -13,11 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/welcome', function () {
     return view('welcome');
 });
 
-Route::group(['prefix' => config('zvn.route.prefix_admin')], function () {
+Route::group(['prefix' => config('zvn.route.prefix_admin')  ], function () {
     // ===================================DASHBOARD========================================
     $prefix_slider = "dashboard";
     $controllerName = "dashboard";

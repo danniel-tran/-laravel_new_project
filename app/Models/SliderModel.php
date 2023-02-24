@@ -2,18 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\AdminModel;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
-class SliderModel extends Model
+class SliderModel extends AdminModel
 {
-    const CREATED_AT = 'created';
-    const UPDATED_AT = 'modified';
-    protected $table = 'slider';
-    protected $primaryKey = 'id';
-    public $incrementing = false;
-    public $timestamps = false;
-
     public function __construct()
     {
         $this->table               = 'slider';
@@ -76,14 +71,34 @@ class SliderModel extends Model
             $status = ($params['currentStatus'] == "active") ? "inactive" : "active";
             self::where('id', $params['id'])->update(['status' => $status]);
         }
+        if($options['task'] == 'add-item') {
+            $params['thumb'] = $this->uploadThumb($params['thumb']);
+            $params['created_by'] = "hailan";
+            $params['created']    = date('Y-m-d h:i:s');
+            self::insert($this->prepareParams($params));        
+        }
+        
+        if($options['task'] == 'edit-item') {
+            if(!empty($params['thumb'])){
+                $this->deleteThumb($params['thumb_current']);
+                $params['thumb'] = $this->uploadThumb($params['thumb']);
+            }
+            $params['modified_by']   = "hailan";
+            $params['modified']      = date('Y-m-d');
+            self::where('id', $params['id'])->update($this->prepareParams($params));
+        }
+
     }
 
     public function deleteItem($params = null, $options = null)
     {
-        if ($options['task'] == 'detete-item') {
-            // self::where('id', $params['id'])->delete(['id' => $params['id']]);
-            self::destroy($params['id']);
+        if($options['task'] == 'delete-item') {
+            // self::destroy($params['id']);
+            $item   = $this->getItem($params, ['task'=>'get-thumb']); // 
+            $this->deleteThumb($item["thumb"]);
+            self::where('id', $params['id'])->delete();
         }
+        
     }
 
     public function getItem($params, $options = null)
@@ -92,6 +107,22 @@ class SliderModel extends Model
         if ($options['task'] == 'get-item') {
             $result = self::select('id', 'name', 'description', 'status', 'link', 'thumb')->where('id', $params['id'])->first();
         }
+        if($options['task'] == 'get-thumb') {
+            $result = self::select('id', 'thumb')->where('id', $params['id'])->first();
+        }
         return $result;
+    }
+
+    public function uploadThumb($thumbObj){
+        $thumbName      = Str::random(10) . "_" . "." . $thumbObj->clientExtension();
+        $thumbObj->storeAs($this->folderUpload, $thumbName, 'zvn_storage_image');
+    }
+
+    public function deleteThumb($thumbName){
+        Storage::disk('zvn_storage_image')->delete($this->folderUpload . "/" . $thumbName);
+    }
+
+    public function prepareParams($params){
+        return array_diff_key($params, array_flip($this->crudNotAccepted));
     }
 }
