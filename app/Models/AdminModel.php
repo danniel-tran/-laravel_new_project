@@ -22,6 +22,7 @@ class AdminModel extends Model
     public function uploadThumb($thumbObj){
         $thumbName      = Str::random(10) . "_" . "." . $thumbObj->clientExtension();
         $thumbObj->storeAs($this->folderUpload, $thumbName, 'zvn_storage_image');
+        return $thumbName;
     }
 
     public function deleteThumb($thumbName){

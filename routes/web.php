@@ -46,6 +46,22 @@ Route::group(['prefix' => config('zvn.route.prefix_admin')  ], function () {
             Route::get('/change-status-{status}/{id}', $controller . "status")->where('id', '[0-9]+')->name("$controllerName/status");
         }
     );
+
+    // ===================================CATEGORY========================================
+    $prefix_slider = "category";
+    $controllerName = "category";
+    Route::group(
+        ['prefix' => $prefix_slider],
+        function () use ($controllerName) {
+            $controller = ucfirst($controllerName) . 'Controller@';
+            Route::get('/', $controller . "index")->name("$controllerName");
+            Route::get('/edit/{id}', $controller . "edit")->where('id', '[0-9]+')->name("$controllerName/edit");
+            Route::get('/form/{id?}', $controller . 'form')->name($controllerName . '/form');
+            Route::post('/save', $controller . 'save')->name($controllerName . '/save');
+            Route::get('/delete/{id}', $controller . "delete")->where('id', '[0-9]+')->name("$controllerName/delete");
+            Route::get('/change-status-{status}/{id}', $controller . "status")->where('id', '[0-9]+')->name("$controllerName/status");
+        }
+    );
 });
 
 Route::group(['prefix' => config('zvn.route.prefix_news')  ], function () {

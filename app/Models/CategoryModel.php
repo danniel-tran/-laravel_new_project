@@ -7,21 +7,20 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
-class SliderModel extends AdminModel
+class CategoryModel extends AdminModel
 {
     public function __construct()
     {
-        $this->table               = 'slider';
-        $this->folderUpload        = 'slider';
-        $this->fieldSearchAccepted = ['id', 'name', 'description', 'link'];
-        $this->crudNotAccepted     = ['_token', 'thumb_current'];
+        $this->table               = 'category';
+        $this->fieldSearchAccepted = ['id', 'name'];
+        $this->crudNotAccepted     = ['_token'];
     }
     
     public function listItem($params, $options = null)
     {
         $result = null;
         if ($options['task'] == "admin-list-items") {
-            $query = self::select('id', 'name', 'description', 'link', 'thumb', 'created', 'created_by', 'modified', 'modified_by', 'status');
+            $query = self::select('id', 'name', 'created', 'created_by', 'modified', 'modified_by', 'status');
             if (isset($params['filter']['status']) && $params['filter']['status'] != 'all') {
                 $query->where("status", "=", $params['filter']['status']);
             }
@@ -80,19 +79,12 @@ class SliderModel extends AdminModel
             self::where('id', $params['id'])->update(['status' => $status]);
         }
         if($options['task'] == 'add-item') {
-            $params['thumb'] = $this->uploadThumb($params['thumb']);
             $params['created_by'] = "hailan";
             $params['created']    = date('Y-m-d h:i:s');
             self::insert($this->prepareParams($params));        
         }
         
         if($options['task'] == 'edit-item') {
-            if(!empty($params['thumb'])){
-                $this->deleteThumb($params['thumb_current']);
-                $params['thumb'] = $this->uploadThumb($params['thumb']);
-            }else{
-                array_push($this->crudNotAccepted,"thumb");
-            }
             $params['modified_by']   = "hailan";
             $params['modified']      = date('Y-m-d');
             self::where('id', $params['id'])->update($this->prepareParams($params));
@@ -103,9 +95,6 @@ class SliderModel extends AdminModel
     public function deleteItem($params = null, $options = null)
     {
         if($options['task'] == 'delete-item') {
-            // self::destroy($params['id']);
-            $item   = $this->getItem($params, ['task'=>'get-thumb']); // 
-            $this->deleteThumb($item["thumb"]);
             self::where('id', $params['id'])->delete();
         }
         
@@ -115,11 +104,9 @@ class SliderModel extends AdminModel
     {
         $result = null;
         if ($options['task'] == 'get-item') {
-            $result = self::select('id', 'name', 'description', 'status', 'link', 'thumb')->where('id', $params['id'])->first();
-        }
-        if($options['task'] == 'get-thumb') {
-            $result = self::select('id', 'thumb')->where('id', $params['id'])->first();
+            $result = self::select('id', 'name', 'status')->where('id', $params['id'])->first();
         }
         return $result;
     }
+
 }
