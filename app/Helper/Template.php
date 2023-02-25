@@ -91,6 +91,19 @@ class Template
         return $xhtml;
     }
 
+    public static function showItemIsHome ($controllerName, $id, $isHomeValue) {
+        $tmplIsHome = Config::get('zvn.template.is_home');
+        $isHomeValue        = array_key_exists($isHomeValue, $tmplIsHome ) ? $isHomeValue : 'no';
+        $currentTemplateIsHome = $tmplIsHome[$isHomeValue];
+        $link          = route($controllerName . '/isHome', ['is_home' => $isHomeValue, 'id' => $id]);
+
+        $xhtml =  '
+        <a href="' . $link . '" type="button"
+        class="btn btn-round ' . $currentTemplateIsHome['class'] . '">' . $currentTemplateIsHome['name'] . '
+        </a>';
+        return $xhtml;
+    }
+
     public static function showItemThumb($controllerName, $thumb, $name)
     {
         $link = asset("images/$controllerName/$thumb");

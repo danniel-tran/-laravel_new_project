@@ -33,6 +33,7 @@ class CategoryRequest extends FormRequest
         return [
             'name'        => $condName,
             'status'      => 'bail|in:active,inactive',
+            'is_home'      => 'bail|in:yes,no',
         ];
     }
 

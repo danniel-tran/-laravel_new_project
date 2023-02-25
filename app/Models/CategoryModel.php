@@ -20,7 +20,7 @@ class CategoryModel extends AdminModel
     {
         $result = null;
         if ($options['task'] == "admin-list-items") {
-            $query = self::select('id', 'name', 'created', 'created_by', 'modified', 'modified_by', 'status');
+            $query = self::select('id', 'name', 'created','is_home', 'created_by', 'modified', 'modified_by', 'status');
             if (isset($params['filter']['status']) && $params['filter']['status'] != 'all') {
                 $query->where("status", "=", $params['filter']['status']);
             }
@@ -40,9 +40,9 @@ class CategoryModel extends AdminModel
                 ->paginate($params['pagination']['totalItemsInPage']);
         }
         if($options['task'] == 'news-list-items') {
-            $query = self::select('id', 'name', 'description', 'link', 'thumb')
+            $query = self::select('id', 'name')
                         ->where('status', '=', 'active' )
-                        ->limit(5);
+                        ->limit(8);
 
             $result = $query->get()->toArray();
         }
@@ -77,6 +77,10 @@ class CategoryModel extends AdminModel
         if ($options['task'] == 'change-status') {
             $status = ($params['currentStatus'] == "active") ? "inactive" : "active";
             self::where('id', $params['id'])->update(['status' => $status]);
+        }
+        if ($options['task'] == 'change-is-home') {
+            $isHome = ($params['currentIsHome'] == "yes") ? "no" : "yes";
+            self::where('id', $params['id'])->update(['is_home' => $isHome]);
         }
         if($options['task'] == 'add-item') {
             $params['created_by'] = "hailan";

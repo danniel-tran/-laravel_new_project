@@ -7,6 +7,7 @@
     $formLabelAttr = config('zvn.template.form_label');
 
     $statusValue      = ['default' => 'Select status', 'active' => config('zvn.template.status.active.name'), 'inactive' => config('zvn.template.status.inactive.name')];
+    $IsHomeValue      = ['default' => 'Select is home', 'yes' => config('zvn.template.is_home.yes.name'), 'no' => config('zvn.template.is_home.no.name')];
 
     $inputHiddenID    = Form::hidden('id', @$item['id']);
 
@@ -18,6 +19,10 @@
         [
             'label'   => Form::label('status', 'Status', $formLabelAttr),
             'element' => Form::select('status', $statusValue, @$item['status'], $formInputAttr)
+        ],
+        [
+            'label'   => Form::label('is_home', 'Is Home', $formLabelAttr),
+            'element' => Form::select('is_home', $IsHomeValue, @$item['is_home'], $formInputAttr)
         ],
         [
             'element' => $inputHiddenID . Form::submit('Save', ['class'=>'btn btn-success']),

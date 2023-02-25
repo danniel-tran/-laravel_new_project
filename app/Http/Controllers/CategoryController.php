@@ -45,6 +45,14 @@ class CategoryController extends Controller
         return redirect()->route($this->controllerName)->with('zvn_notify', 'Cập nhật trạng thái thành công!');
     }
 
+    public function isHome(Request $request)
+    {
+        $params["currentIsHome"]  = $request->is_home;
+        $params["id"]             = $request->id;
+        $this->model->saveItem($params, ['task' => 'change-is-home']);
+        return redirect()->route($this->controllerName)->with('zvn_notify', 'Cập nhật hiển thị trang Home thành công!');
+    }
+
     public function form(Request $request)
     {
         $items = null;
