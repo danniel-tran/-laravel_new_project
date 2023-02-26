@@ -12,6 +12,8 @@
 <script src="{{ asset('admin/asset/iCheck/icheck.min.js')}}"></script>
 <!-- date-time-picker -->
 <script src="{{ asset('admin/asset/datepicker/js/bootstrap-datepicker.js')}}"></script>
+<!-- CKEDITOR -->
+<script src="{{ asset('admin/js/ckeditor/ckeditor.js')}}"></script>
 <!-- Custom Theme Scripts -->
 <script src="{{ asset('admin/js/custom.min.js')}}"></script>
 <script src="{{ asset('admin/js/my-js.js')}}"></script>

@@ -1,4 +1,5 @@
 $(document).ready(function () {
+	CKEDITOR.replace( 'content' );
 	let $btnSearch = $("button#btn-search");
 	let $btnClearSearch = $("button#btn-clear");
 
