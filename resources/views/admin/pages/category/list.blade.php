@@ -12,6 +12,7 @@
                     <th class="column-title">Info</th>
                     <th class="column-title">Trạng thái</th>
                     <th class="column-title">Hiển thị Home</th>
+                    <th class="column-title">Display</th>
                     <th class="column-title">Tạo mới</th>
                     <th class="column-title">Chỉnh sửa</th>
                     <th class="column-title">Hành động</th>
@@ -28,17 +29,19 @@
                             $name         = Highlight::show($val['name'],$params['search'],'name');
                             $status       = Template::showItemStatus($controllerName,$id,$val['status']);
                             $isHome       = Template::showItemIsHome($controllerName,$id,$val['is_home']);
+                            $display      = Template::showItemSelect($controllerName,$id,$val['display'],"display");
                             $create       = Template::showItemHistory($val['created_by'],date(config("zvn.format.long_time") , strtotime($val['created'])) );
                             $modified     = Template::showItemHistory($val['modified_by'],date(config("zvn.format.long_time") , strtotime($val['modified'])) );
                             $buttonAction = Template::showButtonAction($controllerName , $id);
                         @endphp
                         <tr class="{{ $parityClass }} pointer">
                             <td> {!! $index !!}</td>
-                            <td width="40%">
+                            <td width="25%">
                                 <p><strong>Name:</strong> {!! $name !!}</p>
                             </td>
                             <td>{!! $status !!}</td>
                             <td>{!! $isHome !!}</td>
+                            <td>{!! $display !!}</td>
                             <td>{!! $create !!}</td>
                             <td>{!! $modified !!}</td>
                             <td class="last">{!! $buttonAction !!}</td>

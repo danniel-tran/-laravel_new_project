@@ -34,6 +34,7 @@ class CategoryRequest extends FormRequest
             'name'        => $condName,
             'status'      => 'bail|in:active,inactive',
             'is_home'      => 'bail|in:yes,no',
+            'display'      => 'bail|in:list,grid',
         ];
     }
 

@@ -20,7 +20,7 @@ class CategoryModel extends AdminModel
     {
         $result = null;
         if ($options['task'] == "admin-list-items") {
-            $query = self::select('id', 'name', 'created','is_home', 'created_by', 'modified', 'modified_by', 'status');
+            $query = self::select('id', 'name', 'created','display','is_home', 'created_by', 'modified', 'modified_by', 'status');
             if (isset($params['filter']['status']) && $params['filter']['status'] != 'all') {
                 $query->where("status", "=", $params['filter']['status']);
             }
@@ -43,6 +43,13 @@ class CategoryModel extends AdminModel
             $query = self::select('id', 'name')
                         ->where('status', '=', 'active' )
                         ->limit(8);
+
+            $result = $query->get()->toArray();
+        }
+        if($options['task'] == 'news-list-items-is-home') {
+            $query = self::select('id', 'name', 'display')
+                        ->where('status', '=', 'active' )
+                        ->where('is_home', '=', 'yes' );
 
             $result = $query->get()->toArray();
         }
@@ -82,6 +89,10 @@ class CategoryModel extends AdminModel
             $isHome = ($params['currentIsHome'] == "yes") ? "no" : "yes";
             self::where('id', $params['id'])->update(['is_home' => $isHome]);
         }
+        if ($options['task'] == 'change-display') {
+            $display = $params['currentDisplay'];
+            self::where('id', $params['id'])->update(['display' => $display]);
+        }
         if($options['task'] == 'add-item') {
             $params['created_by'] = "hailan";
             $params['created']    = date('Y-m-d h:i:s');
@@ -108,8 +119,8 @@ class CategoryModel extends AdminModel
     {
         $result = null;
         if ($options['task'] == 'get-item') {
-            $result = self::select('id', 'name', 'status')->where('id', $params['id'])->first();
-        }
+            $result = self::select('id', 'name', 'status','display','is_home')->where('id', $params['id'])->first();
+        };
         return $result;
     }
 
