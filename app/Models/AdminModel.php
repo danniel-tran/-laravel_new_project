@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
+
 class AdminModel extends Model
 {
     const CREATED_AT = 'created';

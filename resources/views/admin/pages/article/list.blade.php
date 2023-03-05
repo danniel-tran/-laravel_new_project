@@ -9,8 +9,9 @@
             <thead>
                 <tr class="headings">
                     <th class="column-title">#</th>
-                    <th class="column-title">Article Info</th>
-                    <th class="column-title">Thumb</th>
+                    <th class="column-title" style="width:20%;">Article Info</th>
+                    <th class="column-title" style="width:10%;">Thumb</th>
+                    <th class="column-title">Category</th>
                     <th class="column-title">Trạng thái</th>
                     <th class="column-title">Tạo mới</th>
                     <th class="column-title">Chỉnh sửa</th>
@@ -31,6 +32,7 @@
                             $create       = Template::showItemHistory($val['created_by'],date(config("zvn.format.long_time") , strtotime($val['created'])) );
                             $modified     = Template::showItemHistory($val['modified_by'],date(config("zvn.format.long_time") , strtotime($val['modified'])) );
                             $thumb        = Template::showItemThumb($controllerName,$val['thumb'],$name);
+                            $category_name = $val->category->name;
                             $buttonAction = Template::showButtonAction($controllerName , $id);
                         @endphp
                         <tr class="{{ $parityClass }} pointer">
@@ -40,6 +42,7 @@
                                 <p><strong>Content:</strong> {!! $content !!}</p>
                             </td>
                             <td>{!! $thumb !!}</td>
+                            <td>{!! $category_name !!}</td>
                             <td>{!! $status !!}</td>
                             <td>{!! $create !!}</td>
                             <td>{!! $modified !!}</td>

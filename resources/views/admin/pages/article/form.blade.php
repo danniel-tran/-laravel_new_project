@@ -4,6 +4,7 @@
     use App\Helper\Template as Template;
 
     $formInputAttr = config('zvn.template.form_input');
+    $formCkeditor = config('zvn.template.form_ckeditor');
     $formLabelAttr = config('zvn.template.form_label');
 
     $statusValue      = ['default' => 'Select status', 'active' => config('zvn.template.status.active.name'), 'inactive' => config('zvn.template.status.inactive.name')];
@@ -20,7 +21,7 @@
         ],
         [
             'label'   => Form::label('content', 'Content', $formLabelAttr),
-            'element' => Form::textarea('content', @$item['content'],  $formInputAttr )
+            'element' => Form::textarea('content', @$item['content'],  $formCkeditor )
         ],
         [
             'label'   => Form::label('status', 'Status', $formLabelAttr),

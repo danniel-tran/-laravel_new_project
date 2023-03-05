@@ -15,6 +15,9 @@ return [
         'form_label' => [
             'class' => 'control-label col-md-3 col-sm-3 col-xs-12'
         ],
+        'form_ckeditor' => [
+            'class' => 'form-control col-md-6 col-xs-12 ckeditor'
+        ],
         'status' => [
             'all'      => ['name' => 'Tất cả', 'class' => 'btn-success'],
             'active'   => ['name' => 'Kích hoạt', 'class'      => 'btn-success'],

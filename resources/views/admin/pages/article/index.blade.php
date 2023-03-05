@@ -1,8 +1,10 @@
 @extends("admin.main")
 @php
     use App\Helper\Template as Template;
-    $xhtmlButtonFilter = Template::showButtonFilter($controllerName,$itemsStatusCount,$params['filter']['status'],$params['search']);
-    $xhtmlAreaSearch   = Template::showAreaSearch($controllerName,$params['search']); 
+    $xhtmlButtonFilter  = Template::showButtonFilter($controllerName,$itemsStatusCount,$params['filter']['status'],$params['search']);
+    $xhtmlAreaSearch    = Template::showAreaSearch($controllerName,$params['search']); 
+    $itemsCategory      = ["default" => "Select Category"] + $itemsCategory;
+    $showFilterCategory = Template::showButtonFilterSelect($itemsCategory,'form-control filter-select-category ml-auto w-50',$params['filter']['filter_category_id']);
 @endphp
 @section("content")
 <div class="right_col" role="main">
@@ -14,7 +16,7 @@
                 @include("admin.template.x_title",["title"=>"Bộ lọc"])
                 <div class="x_content"> 
                     <div class="row">
-                        <div class="col-md-6">{!! $xhtmlButtonFilter !!}
+                        <div class="col-md-6">{!! $xhtmlButtonFilter.$showFilterCategory  !!}
                         </div>
                         <div class="col-md-6">
                             {!! $xhtmlAreaSearch !!}

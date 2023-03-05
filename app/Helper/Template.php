@@ -37,6 +37,23 @@ class Template
         return $xhtml;
     }
 
+    public static function showButtonFilterSelect($listKeyValue, $clasName, $filterValue)
+    {
+        $xhtml = sprintf('<select class="%s">',$clasName);
+        foreach ($listKeyValue as $key => $value) {
+            $xhtmlSelected = '';
+            if (strval($key) === $filterValue) {
+                $xhtmlSelected = 'selected="selected"';
+            };
+
+            
+            $xhtml .= sprintf('<option value="%s" %s>%s</option>', $key, $xhtmlSelected, $value);
+        }
+        $xhtml .= '</select>';
+
+        return $xhtml;
+    }
+
     public static function showAreaSearch($controllerName, $paramsSearch)
     {
         $xhtml = null;

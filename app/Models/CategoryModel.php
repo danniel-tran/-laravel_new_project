@@ -16,6 +16,11 @@ class CategoryModel extends AdminModel
         $this->crudNotAccepted     = ['_token'];
     }
     
+    public function article()
+    {
+        return $this->hasMany('App\Models\Article', 'category_id');
+    }
+    
     public function listItem($params, $options = null)
     {
         $result = null;

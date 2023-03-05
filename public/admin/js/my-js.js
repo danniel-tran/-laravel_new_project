@@ -1,5 +1,4 @@
 $(document).ready(function () {
-	CKEDITOR.replace( 'content' );
 	let $btnSearch = $("button#btn-search");
 	let $btnClearSearch = $("button#btn-clear");
 
@@ -20,11 +19,25 @@ $(document).ready(function () {
 		$inputSearchField.val(field);
 	});
 
+	$(".filter-select-category").change(function (e) {
+		let filter_category_id_value = $(this).val();
+		var pathname = window.location.pathname;
+		let searchParams = new URLSearchParams(window.location.search);
+		params = ['page', 'filter_status', 'select_filter','select_value'];
+		let link = "";
+		$.each(params, function (key, value) {
+			if (searchParams.has(value)) {
+				link += value + "=" + searchParams.get(value) + "&"
+			}
+		});
+		window.location.href = pathname + "?" + link +  "filter_category_id=" + filter_category_id_value;
+	})
+
 	$btnSearch.click(function () {
 
 		var pathname = window.location.pathname;
 		let searchParams = new URLSearchParams(window.location.search);
-		params = ['page', 'filter_status', 'select_field', 'select_value'];
+		params = ['page', 'filter_status', 'select_field', 'select_value','filter_category_id'];
 
 		let link = "";
 		$.each(params, function (key, value) {
@@ -58,14 +71,14 @@ $(document).ready(function () {
 
 		window.location.href = pathname + "?" + link.slice(0, -1);
 	});
-	$(".alert").fadeOut(3000) 
+	$(".alert").fadeOut(3000)
 
 	//Event onchange select filter
 	$selectFilter.on('change', function () {
 		var pathname = window.location.pathname;
 		let searchParams = new URLSearchParams(window.location.search);
 
-		params = ['page', 'filter_status', 'search_field', 'search_value'];
+		params = ['page', 'filter_status', 'search_field', 'search_value','filter_category_id'];
 
 		let link = "";
 		$.each(params, function (key, value) {

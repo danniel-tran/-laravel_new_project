@@ -26,6 +26,9 @@ class ArticleController extends Controller
         $this->params['filter']['status'] = $request->input('filter_status', 'all');
         $this->params['search']['field'] = $request->input('search_field', '');
         $this->params['search']['value'] = $request->input('search_value', '');
+        $this->params['filter']['filter_category_id'] = $request->input('filter_category_id', 'default');
+        $categoryModel = new CategoryModel();
+        $itemsCategory  = $categoryModel->listItem(null, ['task' => 'admin-list-items-select-box']);
         $items = $this->model->listItem($this->params, ['task' => "admin-list-items"]);
         $itemsStatusCount   = $this->model->countByStatus($this->params, ['task' => 'admin-count-items-group-by-status']);
         return view(
@@ -33,7 +36,8 @@ class ArticleController extends Controller
             [
                 'params' => $this->params,
                 'items' => $items,
-                'itemsStatusCount' =>  $itemsStatusCount
+                'itemsStatusCount' =>  $itemsStatusCount,
+                'itemsCategory' =>  $itemsCategory
             ]
         );
     }
@@ -54,7 +58,7 @@ class ArticleController extends Controller
             $items = $this->model->getItem($params, ['task' => 'get-item']);
         }
         $categoryModel = new CategoryModel();
-        $itemsCategory  = $categoryModel->listItem(null,['task'=>'admin-list-items-select-box']);
+        $itemsCategory  = $categoryModel->listItem(null, ['task' => 'admin-list-items-select-box']);
         return view($this->pathViewController . "form", [
             'item'          => $items,
             'itemsCategory' => $itemsCategory
@@ -76,7 +80,7 @@ class ArticleController extends Controller
 
     public function save(MainRequest $request)
     {
-        if($request->isMethod('post')){
+        if ($request->isMethod('post')) {
             $params = $request->all();
 
             $task   = "add-item";

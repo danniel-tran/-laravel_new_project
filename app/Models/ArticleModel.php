@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\AdminModel;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
 
 class ArticleModel extends AdminModel
 {
@@ -14,12 +15,20 @@ class ArticleModel extends AdminModel
         $this->fieldSearchAccepted = ['name', 'content','type','category_id'];
         $this->crudNotAccepted     = ['_token', 'thumb_current'];
     }
+
+    public function category()
+    {
+        return $this->belongsTo('App\Models\CategoryModel',"category_id");
+    }
     
     public function listItem($params, $options = null)
     {
         $result = null;
         if ($options['task'] == "admin-list-items") {
-            $query = self::select('id', 'name', 'content', 'type', 'thumb', 'created', 'created_by', 'modified', 'modified_by', 'status','publish_at');
+            // $query = self::select('id', 'name', 'content', 'type', 'thumb', 'created', 'created_by', 'modified', 'modified_by', 'status','publish_at');
+            $query = self::with(['category' => function ($query) {
+                $query->select('id', 'name');
+            }]);
             if (isset($params['filter']['status']) && $params['filter']['status'] != 'all') {
                 $query->where("status", "=", $params['filter']['status']);
             }
@@ -34,6 +43,13 @@ class ArticleModel extends AdminModel
                 } else if (in_array($params['search']['field'], $this->fieldSearchAccepted)) {
                     $query->where($params['search']['field'], 'LIKE',  "%{$params['search']['value']}%");
                 }
+            }
+            if(isset($params['filter']['filter_category_id']) && 
+                $params['filter']['filter_category_id'] !== false && 
+                $params['filter']['filter_category_id'] !== "default"){
+                    $query->where(function ($query) use ($params) {
+                        $query->where("category_id", '=',  "{$params['filter']['filter_category_id']}");
+                    });
             }
             $result = $query->orderBy("id", "desc")
                 ->paginate($params['pagination']['totalItemsInPage']);
