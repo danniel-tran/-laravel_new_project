@@ -50,6 +50,14 @@ class ArticleController extends Controller
         return redirect()->route($this->controllerName)->with('zvn_notify', 'Cập nhật trạng thái thành công!');
     }
 
+    public function type(Request $request)
+    {
+        $params["currentType"]  = $request->type;
+        $params["id"]           = $request->id;
+        $this->model->saveItem($params, ['task' => 'change-type']);
+        return redirect()->route($this->controllerName)->with('zvn_notify', 'Cập nhật trạng thái thành công!');
+    }
+
     public function form(Request $request)
     {
         $items = null;

@@ -10,7 +10,7 @@
             <div class="col-lg-9">
                 <div class="main_content">
                     <!-- Featured -->
-                    @include("news.block.feature", ['itemsFeature' => []])
+                    @include("news.block.feature", ['items' => $itemsFeatured ?? []])
                     <!-- Category -->
                     @include("news.pages.category.child-index.category")
                 </div>
@@ -19,7 +19,7 @@
             <div class="col-lg-3">
                 <div class="sidebar">
                     <!-- Latest Posts -->
-                    @include("news.block.latest_post", ["itemsLatest" => []]);
+                    @include("news.block.latest_post", ['items' => $itemsLatest]);
                     <!-- Advertisement -->
                     <!-- Extra -->
                     @include("news.block.advertisement",['itemsAdvertisement' => []])

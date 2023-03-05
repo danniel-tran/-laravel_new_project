@@ -39,14 +39,14 @@ class Template
 
     public static function showButtonFilterSelect($listKeyValue, $clasName, $filterValue)
     {
-        $xhtml = sprintf('<select class="%s">',$clasName);
+        $xhtml = sprintf('<select class="%s">', $clasName);
         foreach ($listKeyValue as $key => $value) {
             $xhtmlSelected = '';
             if (strval($key) === $filterValue) {
                 $xhtmlSelected = 'selected="selected"';
             };
 
-            
+
             $xhtml .= sprintf('<option value="%s" %s>%s</option>', $key, $xhtmlSelected, $value);
         }
         $xhtml .= '</select>';
@@ -108,9 +108,10 @@ class Template
         return $xhtml;
     }
 
-    public static function showItemIsHome ($controllerName, $id, $isHomeValue) {
+    public static function showItemIsHome($controllerName, $id, $isHomeValue)
+    {
         $tmplIsHome = Config::get('zvn.template.is_home');
-        $isHomeValue        = array_key_exists($isHomeValue, $tmplIsHome ) ? $isHomeValue : 'no';
+        $isHomeValue        = array_key_exists($isHomeValue, $tmplIsHome) ? $isHomeValue : 'no';
         $currentTemplateIsHome = $tmplIsHome[$isHomeValue];
         $link          = route($controllerName . '/isHome', ['is_home' => $isHomeValue, 'id' => $id]);
 
@@ -132,13 +133,13 @@ class Template
 
     public static function showItemSelect($controllerName, $id, $displayValue, $fieldName)
     {
-       $link          = route($controllerName . '/' . $fieldName, [$fieldName => 'value_new', 'id' => $id]);
-       $tmplDisplay = Config::get('zvn.template.' . $fieldName);
-       $xhtml = sprintf('<select name="select_change_attr" data-url="%s" class="form-control">', $link  );
+        $link          = route($controllerName . '/' . $fieldName, [$fieldName => 'value_new', 'id' => $id]);
+        $tmplDisplay = Config::get('zvn.template.' . $fieldName);
+        $xhtml = sprintf('<select name="select_change_attr" data-url="%s" class="form-control">', $link);
 
         foreach ($tmplDisplay as $key => $value) {
-           $xhtmlSelected = '';
-           if ($key == $displayValue) $xhtmlSelected = 'selected="selected"';
+            $xhtmlSelected = '';
+            if ($key == $displayValue) $xhtmlSelected = 'selected="selected"';
             $xhtml .= sprintf('<option value="%s" %s>%s</option>', $key, $xhtmlSelected, $value['name']);
         }
         $xhtml .= '</select>';
@@ -167,5 +168,17 @@ class Template
         }
         $xhtml .= '</div>';
         return $xhtml;
+    }
+    
+    public static function showDatetimeFrontend($dateTime)
+    {
+        return date_format(date_create($dateTime), Config::get('zvn.format.short_time'));
+    }
+
+    public static function showContent($content, $length, $prefix = '...')
+    {
+        $prefix = ($length == 0) ? '' : $prefix;
+        $content = str_replace(['<p>', '</p>'], '', $content);
+        return preg_replace('/\s+?(\S+)?$/', '', substr($content, 0, $length)) . $prefix;
     }
 }

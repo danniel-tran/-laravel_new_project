@@ -12,9 +12,10 @@
                     <th class="column-title" style="width:20%;">Article Info</th>
                     <th class="column-title" style="width:10%;">Thumb</th>
                     <th class="column-title">Category</th>
+                    <th class="column-title">Loại hiển thị</th>
                     <th class="column-title">Trạng thái</th>
-                    <th class="column-title">Tạo mới</th>
-                    <th class="column-title">Chỉnh sửa</th>
+                    <!-- <th class="column-title">Tạo mới</th>
+                    <th class="column-title">Chỉnh sửa</th> -->
                     <th class="column-title">Hành động</th>
                 </tr>
             </thead>
@@ -29,9 +30,10 @@
                             $name         = Highlight::show($val['name'],$params['search'],'name');
                             $content      = Highlight::show($val['content'],$params['search'],'content');
                             $status       = Template::showItemStatus($controllerName,$id,$val['status']);
-                            $create       = Template::showItemHistory($val['created_by'],date(config("zvn.format.long_time") , strtotime($val['created'])) );
-                            $modified     = Template::showItemHistory($val['modified_by'],date(config("zvn.format.long_time") , strtotime($val['modified'])) );
+                            // $create       = Template::showItemHistory($val['created_by'],date(config("zvn.format.long_time") , strtotime($val['created'])) );
+                            // $modified     = Template::showItemHistory($val['modified_by'],date(config("zvn.format.long_time") , strtotime($val['modified'])) );
                             $thumb        = Template::showItemThumb($controllerName,$val['thumb'],$name);
+                            $type         = Template::showItemSelect($controllerName,$id,$val['type'],"type");
                             $category_name = $val->category->name;
                             $buttonAction = Template::showButtonAction($controllerName , $id);
                         @endphp
@@ -43,9 +45,8 @@
                             </td>
                             <td>{!! $thumb !!}</td>
                             <td>{!! $category_name !!}</td>
+                            <td>{!! $type !!}</td>
                             <td>{!! $status !!}</td>
-                            <td>{!! $create !!}</td>
-                            <td>{!! $modified !!}</td>
                             <td class="last">{!! $buttonAction !!}</td>
                         </tr>
                     @endforeach

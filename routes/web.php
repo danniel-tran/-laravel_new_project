@@ -78,6 +78,7 @@ Route::group(['prefix' => config('zvn.route.prefix_admin')  ], function () {
             Route::post('/save', $controller . 'save')->name($controllerName . '/save');
             Route::get('/delete/{id}', $controller . "delete")->where('id', '[0-9]+')->name("$controllerName/delete");
             Route::get('/change-status-{status}/{id}', $controller . "status")->where('id', '[0-9]+')->name("$controllerName/status");
+            Route::get('change-type-{type}/{id}',    [ 'as' => $controllerName . '/type',     'uses' => $controller . 'type']);
         }
     );
 });
