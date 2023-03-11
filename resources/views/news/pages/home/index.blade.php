@@ -12,7 +12,7 @@
                     <!-- Featured -->
                     @include("news.block.feature", ['items' => $itemsFeatured ?? []])
                     <!-- Category -->
-                    @include("news.pages.category.child-index.category")
+                    @include("news.pages.home.child-index.category")
                 </div>
             </div>
             <!-- Sidebar -->

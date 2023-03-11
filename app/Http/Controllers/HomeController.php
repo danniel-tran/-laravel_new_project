@@ -10,7 +10,7 @@ use App\Models\ArticleModel;
 
 class HomeController extends Controller
 {
-    private $pathViewController = "news.pages.category.";
+    private $pathViewController = "news.pages.home.";
     private $controllerName = "home";
     private $params      = [];
 
@@ -28,6 +28,8 @@ class HomeController extends Controller
         $itemsCategory = $categoryModel->listItem(null, ['task' => 'news-list-items-is-home']);
         $itemsFeatured = $articleModel->listItem(null, ['task'  => 'news-list-items-featured']);
         $itemsLatest   = $articleModel->listItem(null, ['task'  => 'news-list-items-latest']);
+        foreach ($itemsCategory as $key => $category)
+            $itemsCategory[$key]['articles'] = $articleModel->listItem(['category_id' => $category['id']], ['task' => 'news-list-items-in-category']);
         return view(
             $this->pathViewController . "index",
             [
