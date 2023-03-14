@@ -1,5 +1,6 @@
 @php
     use App\Models\CategoryModel as CategoryModel;
+    use App\Helper\URL;
 
     $categoryModel = new CategoryModel();
     $itemsCategory = $categoryModel->listItem(null, ['task' => 'news-list-items']);
@@ -8,13 +9,15 @@
     $xhtmlMenuMobile = '';
 
     if (count($itemsCategory) > 0) {
-
+    $categoryIdCurrent = Route::input('category_id');
     $xhtmlMenu = '<nav class="main_nav">
                     <ul class="main_nav_list d-flex flex-row align-items-center justify-content-start">';
                         $xhtmlMenuMobile = '<nav class="menu_nav">
                             <ul class="menu_mm">';
                                 foreach ($itemsCategory as $item) {
-                                    $xhtmlMenu .= sprintf('<li><a href="#">%s</a></li>', $item['name']);
+                                    $link       =  URL::linkCategory($item['id'], $item['name']); 
+                                    $classActive = ($categoryIdCurrent == $item['id']) ? 'class="active"' : '';
+                                    $xhtmlMenu .= sprintf('<li %s><a href="%s">%s</a></li>', $classActive, $link, $item['name']);
                                     $xhtmlMenuMobile .= sprintf('<li class="menu_mm"><a href="#">%s</a></li>',$item['name']);
                                 }
                             $xhtmlMenu .=   '</ul>

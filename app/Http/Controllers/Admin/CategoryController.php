@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use App\Models\CategoryModel as MainModel;
 use App\Http\Requests\CategoryRequest as MainRequest;
+use App\Http\Controllers\Controller;
 
 class CategoryController extends Controller
 {

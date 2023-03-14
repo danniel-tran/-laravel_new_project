@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\News;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use App\Models\SliderModel;
 use App\Models\CategoryModel;
 use App\Models\ArticleModel;
+use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
 {

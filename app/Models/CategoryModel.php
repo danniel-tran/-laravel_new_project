@@ -15,18 +15,18 @@ class CategoryModel extends AdminModel
         $this->fieldSearchAccepted = ['id', 'name'];
         $this->crudNotAccepted     = ['_token'];
     }
-    
+
     public function article()
     {
         return $this->hasMany('App\Models\Article', 'category_id');
     }
-    
+
     public function listItem($params, $options = null)
     {
         $result = null;
 
         if ($options['task'] == "admin-list-items") {
-            $query = self::select('id', 'name', 'created','display','is_home', 'created_by', 'modified', 'modified_by', 'status');
+            $query = self::select('id', 'name', 'created', 'display', 'is_home', 'created_by', 'modified', 'modified_by', 'status');
             if (isset($params['filter']['status']) && $params['filter']['status'] != 'all') {
                 $query->where("status", "=", $params['filter']['status']);
             }
@@ -46,30 +46,30 @@ class CategoryModel extends AdminModel
                 ->paginate($params['pagination']['totalItemsInPage']);
         }
 
-        if($options['task'] == 'news-list-items') {
+        if ($options['task'] == 'news-list-items') {
             $query = self::select('id', 'name')
-                        ->where('status', '=', 'active' )
-                        ->limit(8);
+                ->where('status', '=', 'active')
+                ->limit(8);
 
             $result = $query->get()->toArray();
         }
 
-        if($options['task'] == 'news-list-items-is-home') {
+        if ($options['task'] == 'news-list-items-is-home') {
             $query = self::select('id', 'name', 'display')
-                        ->where('status', '=', 'active' )
-                        ->where('is_home', '=', 'yes' );
+                ->where('status', '=', 'active')
+                ->where('is_home', '=', 'yes');
 
             $result = $query->get()->toArray();
         }
 
-        if($options['task'] == 'admin-list-items-select-box') {
+        if ($options['task'] == 'admin-list-items-select-box') {
             $query = self::select('id', 'name')
-                        ->where('status', '=', 'active' )
-                        ->orderBy('name', 'asc' );
+                ->where('status', '=', 'active')
+                ->orderBy('name', 'asc');
 
             $result = $query->pluck('name', 'id')->toArray();
         }
-        
+
         return $result;
     }
 
@@ -110,35 +110,37 @@ class CategoryModel extends AdminModel
             $display = $params['currentDisplay'];
             self::where('id', $params['id'])->update(['display' => $display]);
         }
-        if($options['task'] == 'add-item') {
+        if ($options['task'] == 'add-item') {
             $params['created_by'] = "hailan";
             $params['created']    = date('Y-m-d h:i:s');
-            self::insert($this->prepareParams($params));        
+            self::insert($this->prepareParams($params));
         }
-        
-        if($options['task'] == 'edit-item') {
+
+        if ($options['task'] == 'edit-item') {
             $params['modified_by']   = "hailan";
             $params['modified']      = date('Y-m-d');
             self::where('id', $params['id'])->update($this->prepareParams($params));
         }
-
     }
 
     public function deleteItem($params = null, $options = null)
     {
-        if($options['task'] == 'delete-item') {
+        if ($options['task'] == 'delete-item') {
             self::where('id', $params['id'])->delete();
         }
-        
     }
 
     public function getItem($params, $options = null)
     {
         $result = null;
         if ($options['task'] == 'get-item') {
-            $result = self::select('id', 'name', 'status','display','is_home')->where('id', $params['id'])->first();
+            $result = self::select('id', 'name', 'status', 'display', 'is_home')->where('id', $params['id'])->first();
         };
+        if ($options['task'] == 'news-get-item') {
+            $result = self::select('id', 'name', 'display')->where('id', $params['category_id'])->first();
+
+            if ($result) $result = $result->toArray();
+        }
         return $result;
     }
-
 }

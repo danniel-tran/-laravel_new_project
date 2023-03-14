@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use App\Models\SliderModel as MainModel;
 use App\Http\Requests\SliderRequest as MainRequest;
+use App\Http\Controllers\Controller;
 
 class SliderController extends Controller
 {

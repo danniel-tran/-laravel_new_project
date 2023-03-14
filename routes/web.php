@@ -17,7 +17,7 @@ Route::get('/welcome', function () {
     return view('welcome');
 });
 
-Route::group(['prefix' => config('zvn.route.prefix_admin')  ], function () {
+Route::group(['prefix' => config('zvn.route.prefix_admin'),'namespace' => 'Admin'], function () {
     // ===================================DASHBOARD========================================
     $prefix_slider = "dashboard";
     $controllerName = "dashboard";
@@ -61,7 +61,7 @@ Route::group(['prefix' => config('zvn.route.prefix_admin')  ], function () {
             Route::get('/delete/{id}', $controller . "delete")->where('id', '[0-9]+')->name("$controllerName/delete");
             Route::get('/change-status-{status}/{id}', $controller . "status")->where('id', '[0-9]+')->name("$controllerName/status");
             Route::get('/change-is-home-{is_home}/{id}', $controller . "isHome")->where('id', '[0-9]+')->name("$controllerName/isHome");
-            Route::get('change-display-{display}/{id}',    [ 'as' => $controllerName . '/display',     'uses' => $controller . 'display']);
+            Route::get('change-display-{display}/{id}',    ['as' => $controllerName . '/display',     'uses' => $controller . 'display']);
         }
     );
 
@@ -78,12 +78,12 @@ Route::group(['prefix' => config('zvn.route.prefix_admin')  ], function () {
             Route::post('/save', $controller . 'save')->name($controllerName . '/save');
             Route::get('/delete/{id}', $controller . "delete")->where('id', '[0-9]+')->name("$controllerName/delete");
             Route::get('/change-status-{status}/{id}', $controller . "status")->where('id', '[0-9]+')->name("$controllerName/status");
-            Route::get('change-type-{type}/{id}',    [ 'as' => $controllerName . '/type',     'uses' => $controller . 'type']);
+            Route::get('change-type-{type}/{id}',    ['as' => $controllerName . '/type',     'uses' => $controller . 'type']);
         }
     );
 });
 
-Route::group(['prefix' => config('zvn.route.prefix_news')  ], function () {
+Route::group(['prefix' => config('zvn.route.prefix_news'), 'namespace' => 'News'], function () {
     // ===================================NEWS========================================
     $prefix_news = "";
     $controllerName = "home";
@@ -94,4 +94,13 @@ Route::group(['prefix' => config('zvn.route.prefix_news')  ], function () {
             Route::get('/', $controller . "index")->name("$controllerName");
         }
     );
+    // ============================== CATEGORY ==============================
+    $prefix         = 'chuyen-muc';
+    $controllerName = 'category';
+    Route::group(['prefix' =>  $prefix], function () use ($controllerName) {
+        $controller = ucfirst($controllerName)  . 'Controller@';
+        Route::get('/{category_name}-{category_id}.html',  ['as' => $controllerName . '/index', 'uses' => $controller . 'index'])
+            ->where('category_name', '[0-9a-zA-Z_-]+')
+            ->where('category_id', '[0-9]+');
+    });
 });
