@@ -1,5 +1,6 @@
 @php
     use App\Helper\Template as Template;
+    use App\Helper\URL;
 @endphp
 
 <div class="sidebar_latest">
@@ -10,8 +11,8 @@
                 $name         = $item['name'];
                 $thumb        = asset('images/article/' . $item['thumb']);
                 $categoryName = $item['category_name'];
-                $linkCategory = "";
-                $linkArticle  = "";
+                $linkCategory = URL::linkCategory($item['category_id'], $item['category_name']);;
+                $linkArticle  = URL::linkArticle($item['id'], $item['name']);
                 $created      = Template::showDatetimeFrontend($item['created']);
             @endphp
 

@@ -1,9 +1,14 @@
 @php
     use App\Helper\Template as Template;
+    use App\Helper\URL;
     $name         = $item['name'];
     $thumb        = asset('images/article/' . $item['thumb']);
+    
     $linkCategory  =  "#";
-    $linkArticle  = "#";
+    if ($showCategory) {
+        $linkCategory  =  URL::linkCategory($item['category_id'], $item['category_name']);
+    }
+    $linkArticle  = URL::linkArticle($item['id'], $item['name']);
     $created      = Template::showDatetimeFrontend($item['created']);
 
     if($lenghtContent === "full") {

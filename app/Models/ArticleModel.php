@@ -21,6 +21,11 @@ class ArticleModel extends AdminModel
         return $this->belongsTo('App\Models\CategoryModel', "category_id");
     }
 
+    public function setTable($table)
+    {
+        $this->table               = $table;
+    }
+
     public function listItem($params, $options = null)
     {
         $result = null;
@@ -100,6 +105,16 @@ class ArticleModel extends AdminModel
                 ->take(4);
             $result = $query->get()->toArray();
         }
+
+        if ($options['task'] == 'news-list-items-related-in-category') {
+            $query = $this->select('id', 'name', 'content', 'thumb', 'created')
+                ->where('status', '=', 'active')
+                ->where("id", '!=', $params['article_id'])
+                ->where('category_id', '=', $params['category_id'])
+                ->take(4);
+            $result = $query->get()->toArray();
+        }
+
         return $result;
     }
 
@@ -176,6 +191,14 @@ class ArticleModel extends AdminModel
         }
         if ($options['task'] == 'get-thumb') {
             $result = self::select('id', 'thumb')->where('id', $params['id'])->first();
+        }
+        if ($options['task'] == 'news-get-item') {
+            $this->setTable('article as a');
+            $result = self::select('a.id', 'a.name', 'content', 'a.category_id', 'c.name as category_name', 'a.thumb', 'a.created', 'c.display')
+                ->leftJoin('category as c', 'a.category_id', '=', 'c.id')
+                ->where('a.id', '=', $params['article_id'])
+                ->where('a.status', '=', 'active')->first();
+            if ($result) $result = $result->toArray();
         }
         return $result;
     }
