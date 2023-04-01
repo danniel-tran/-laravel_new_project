@@ -15,6 +15,9 @@ return [
         'form_label' => [
             'class' => 'control-label col-md-3 col-sm-3 col-xs-12'
         ],
+        'form_label_edit' => [
+            'class' => 'control-label col-md-4 col-sm-3 col-xs-12'
+        ],
         'form_ckeditor' => [
             'class' => 'form-control col-md-6 col-xs-12 ckeditor'
         ],
@@ -36,6 +39,10 @@ return [
         'type' => [
             'featured'   => ['name'=> 'Nổi bật'],
             'normal'     => ['name'=> 'Bình thường'],
+        ],
+        'level'       => [
+            'admin'      => ['name'=> 'Quản trị hệ thống'],
+            'member'      => ['name'=> 'Người dùng bình thường'],
         ],
         'search' => [
             'all'           => ['name'=> 'Search by All'],

@@ -81,6 +81,20 @@ Route::group(['prefix' => config('zvn.route.prefix_admin'), 'namespace' => 'Admi
             Route::get('change-type-{type}/{id}',    ['as' => $controllerName . '/type',     'uses' => $controller . 'type']);
         }
     );
+    // ============================== USER ==============================
+    $prefix         = 'user';
+    $controllerName = 'user';
+    Route::group(['prefix' =>  $prefix], function () use($controllerName) {
+        $controller = ucfirst($controllerName)  . 'Controller@';
+        Route::get('/', $controller . "index")->name("$controllerName");
+        Route::get('/form/{id?}', $controller . 'form')->where('id', '[0-9]+')->name($controllerName . '/form');
+        Route::post('/save', $controller . 'save')->name($controllerName . '/save');
+        Route::get('/change-status-{status}/{id}', $controller . "status")->where('id', '[0-9]+')->name("$controllerName/status")->where('id', '[0-9]+');
+        Route::get('/change-level-{level}/{id}', $controller . "level")->where('id', '[0-9]+')->name("$controllerName/level")->where('id', '[0-9]+');
+        Route::post('change-password',$controller . 'changePassword')->name($controllerName . '/change-password');
+        Route::post('change-level',$controller . 'changeLevel')->name($controllerName . '/change-level');
+        Route::post('/delete/{id}',$controller . 'delete')->name($controllerName . '/delete')->where('id', '[0-9]+');
+    });
 });
 
 Route::group(['prefix' => config('zvn.route.prefix_news'), 'namespace' => 'News'], function () {
