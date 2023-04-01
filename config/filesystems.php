@@ -42,10 +42,7 @@ return [
     */
 
     'disks' => [
-        'zvn_storage_image' => [
-            'driver' => 'local',
-            'root' => public_path('images'),
-        ],
+
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),
