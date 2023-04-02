@@ -17,7 +17,7 @@ Route::get('/welcome', function () {
     return view('welcome');
 });
 
-Route::group(['prefix' => config('zvn.route.prefix_admin'), 'namespace' => 'Admin'], function () {
+Route::group(['prefix' => config('zvn.route.prefix_admin'), 'namespace' => 'Admin','middleware' => ['permission.admin']], function () {
     // ===================================DASHBOARD========================================
     $prefix_slider = "dashboard";
     $controllerName = "dashboard";
@@ -125,5 +125,26 @@ Route::group(['prefix' => config('zvn.route.prefix_news'), 'namespace' => 'News'
         Route::get('/{article_name}-{article_id}.html',  ['as' => $controllerName . '/index', 'uses' => $controller . 'index'])
             ->where('article_name', '[0-9a-zA-Z_-]+')
             ->where('article_id', '[0-9]+');
+    });
+
+    // ============================== NOTIFY ==============================
+    $prefix         = '';
+    $controllerName = 'notify';
+    Route::group(['prefix' =>  $prefix], function () use ($controllerName) {
+        $controller = ucfirst($controllerName)  . 'Controller@';
+        Route::get('/no-permission',                             [ 'as' => $controllerName . '/noPermission',                  'uses' => $controller . 'noPermission' ]);
+    });
+
+    // ====================== LOGIN ========================
+    $prefix         = '';
+    $controllerName = 'auth';
+    
+    Route::group(['prefix' =>  $prefix], function () use ($controllerName) {
+        $controller = ucfirst($controllerName)  . 'Controller@';
+        Route::get('/login',        ['as' => $controllerName.'/login',      'uses' => $controller . 'login'])->middleware('check.login');;
+        Route::post('/postLogin',   ['as' => $controllerName.'/postLogin',  'uses' => $controller . 'postLogin']);
+
+        // ====================== LOGOUT ========================
+        Route::get('/logout',       ['as' => $controllerName.'/logout',     'uses' => $controller . 'logout']);
     });
 });
