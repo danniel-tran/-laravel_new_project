@@ -6,7 +6,8 @@
 -- Generation Time: May 02, 2023 at 02:24 PM
 -- Server version: 5.7.34
 -- PHP Version: 8.0.8
-
+CREATE DATABASE laravel_news;
+USE laravel_news;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
